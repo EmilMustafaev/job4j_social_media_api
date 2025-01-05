@@ -16,3 +16,5 @@
 - Аутентификация и авторизация: Spring Security
 
 - Документация API: Swagger или OpenAPI
+
+![Build Status](https://github.com/EmilMustafaev/job4j_social_media_api/actions/workflows/maven.yml/badge.svg)
