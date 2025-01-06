@@ -2,7 +2,6 @@ package ru.job4j.springbootstart.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
