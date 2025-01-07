@@ -17,7 +17,6 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
         userRepository.deleteAll();
     }

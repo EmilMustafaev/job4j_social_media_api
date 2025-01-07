@@ -21,7 +21,6 @@ class MessageRepositoryTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
         messageRepository.deleteAll();
         userRepository.deleteAll();

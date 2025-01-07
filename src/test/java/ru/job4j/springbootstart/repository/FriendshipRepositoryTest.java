@@ -26,7 +26,6 @@ class FriendshipRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
         friendshipRepository.deleteAll();
         userRepository.deleteAll();

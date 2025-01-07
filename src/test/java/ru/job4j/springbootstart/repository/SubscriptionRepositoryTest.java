@@ -29,7 +29,6 @@ class SubscriptionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
         subscriptionRepository.deleteAll();
         postRepository.deleteAll();
