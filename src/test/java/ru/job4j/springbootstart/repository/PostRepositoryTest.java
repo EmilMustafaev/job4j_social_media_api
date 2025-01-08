@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PostRepositoryTest {
 
+
     @Autowired
     private PostRepository postRepository;
 
