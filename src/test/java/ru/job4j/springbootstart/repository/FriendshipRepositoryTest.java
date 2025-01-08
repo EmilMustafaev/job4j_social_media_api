@@ -13,7 +13,7 @@ import ru.job4j.springbootstart.model.User;
 import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled
+
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FriendshipRepositoryTest {
