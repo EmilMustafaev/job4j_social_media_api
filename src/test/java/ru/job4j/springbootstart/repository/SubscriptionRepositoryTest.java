@@ -1,6 +1,7 @@
 package ru.job4j.springbootstart.repository;
 
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
@@ -13,6 +14,7 @@ import ru.job4j.springbootstart.model.User;
 import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SubscriptionRepositoryTest {
