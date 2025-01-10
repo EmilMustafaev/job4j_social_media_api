@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.job4j.springbootstart.model.Post;
+import ru.job4j.springbootstart.model.User;
 import ru.job4j.springbootstart.repository.PostRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,6 +44,11 @@ public class PostService {
             result = true;
         }
         return result;
+    }
+
+    @Transactional
+    public List<Post> findAll() {
+        return (List<Post>) postRepository.findAll();
     }
 }
 
