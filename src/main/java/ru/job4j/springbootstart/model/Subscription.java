@@ -1,7 +1,9 @@
 package ru.job4j.springbootstart.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Entity
@@ -10,13 +12,6 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 public class Subscription {
-    public Subscription(Long subscriberId, Long postId, LocalDateTime createdAt) {
-        this.subscriber = new User();
-        this.subscriber.setId(subscriberId);
-        this.post = new Post();
-        this.post.setId(postId);
-        this.createdAt = createdAt;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +27,13 @@ public class Subscription {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    public Subscription(Long subscriberId, Long postId, LocalDateTime createdAt) {
+        this.subscriber = new User();
+        this.subscriber.setId(subscriberId);
+        this.post = new Post();
+        this.post.setId(postId);
+        this.createdAt = createdAt;
+    }
 
 }
