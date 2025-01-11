@@ -50,5 +50,10 @@ public class PostService {
     public List<Post> findAll() {
         return (List<Post>) postRepository.findAll();
     }
+
+    @Transactional
+    public Optional<Post> findPostById(Long id) {
+        return postRepository.findById(id);
+    }
 }
 
