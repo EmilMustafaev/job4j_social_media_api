@@ -1,8 +1,10 @@
 package ru.job4j.springbootstart.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.springbootstart.model.Post;
 import ru.job4j.springbootstart.service.PostService;
 
@@ -18,9 +20,15 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        return postService.createPost(post)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+        postService.createPost(post);
+        var uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .location(uri)
+                .body(post);
     }
 
     @GetMapping("/{id}")

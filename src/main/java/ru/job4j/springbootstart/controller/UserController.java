@@ -1,8 +1,10 @@
 package ru.job4j.springbootstart.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.springbootstart.model.User;
 import ru.job4j.springbootstart.service.UserService;
 
@@ -17,9 +19,15 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        return userService.createUser(user)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+        userService.createUser(user);
+        var uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .location(uri)
+                .body(user);
     }
 
     @GetMapping("/{id}")
