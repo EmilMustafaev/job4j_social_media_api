@@ -5,11 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.job4j.springbootstart.dto.UserDTO;
 import ru.job4j.springbootstart.model.Post;
 import ru.job4j.springbootstart.service.PostService;
+import ru.job4j.springbootstart.service.UserService;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -17,6 +20,9 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
+    private final UserService userService;
+
 
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
@@ -57,6 +63,22 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         return ResponseEntity.ok(postService.findAll());
+    }
+
+    @PostMapping("/users/posts")
+    public ResponseEntity<List<UserDTO>> getUserPosts(@RequestBody List<Long> userIds) {
+        List<UserDTO> userDTOs = userIds.stream()
+                .map(userId -> {
+                    var user = userService.findUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+                    var posts = postService.getPostsByUserId(userId).stream()
+                            .map(Post::getTitle)
+                            .collect(Collectors.toList());
+
+                    return new UserDTO(user.getId(), user.getUsername(), posts);
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userDTOs);
     }
 }
 

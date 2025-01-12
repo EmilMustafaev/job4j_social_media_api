@@ -55,5 +55,10 @@ public class PostService {
     public Optional<Post> findPostById(Long id) {
         return postRepository.findById(id);
     }
+
+    @Transactional
+    public List<Post> getPostsByUserId(Long userId) {
+        return postRepository.findByUserId(userId);
+    }
 }
 
