@@ -1,8 +1,12 @@
 package ru.job4j.springbootstart.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.springbootstart.dto.UserDTO;
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/posts")
 @AllArgsConstructor
+@Validated
 public class PostController {
 
     private final PostService postService;
@@ -25,7 +30,7 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
         postService.createPost(post);
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -38,14 +43,17 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<Post> getPostById(@PathVariable @NotNull
+                                            @Min(value = 1, message = "ID ресурса должен быть 1 и более") Long id) {
         return postService.findPostById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable Long id, @RequestBody Post post) {
+    public ResponseEntity<Void> updatePost(@PathVariable @NotNull
+                                           @Min(value = 1, message = "ID ресурса должен быть 1 и более") Long id,
+                                           @Valid @RequestBody Post post) {
         if (postService.updatePost(id, post)) {
             return ResponseEntity.ok().build();
         }
@@ -53,7 +61,9 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePost(@PathVariable
+                                           @NotNull
+                                           @Min(value = 1, message = "ID ресурса должен быть 1 и более") Long id) {
         if (postService.deletePost(id)) {
             return ResponseEntity.noContent().build();
         }
