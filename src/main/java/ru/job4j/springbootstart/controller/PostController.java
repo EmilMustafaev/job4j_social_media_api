@@ -1,5 +1,9 @@
 package ru.job4j.springbootstart.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/posts")
 @AllArgsConstructor
 @Validated
+@Tag(name = "PostController", description = "API для управления публикациями")
 public class PostController {
 
     private final PostService postService;
@@ -29,6 +34,11 @@ public class PostController {
     private final UserService userService;
 
 
+    @Operation(summary = "Создать новую публикацию", description = "Создает новую публикацию и возвращает её данные")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Публикация успешно создана"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации")
+    })
     @PostMapping
     public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
         postService.createPost(post);
@@ -42,6 +52,11 @@ public class PostController {
                 .body(post);
     }
 
+    @Operation(summary = "Получить публикацию по ID", description = "Возвращает данные публикации по её ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Публикация найдена"),
+            @ApiResponse(responseCode = "404", description = "Публикация не найдена")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable @NotNull
                                             @Min(value = 1, message = "ID ресурса должен быть 1 и более") Long id) {
@@ -50,6 +65,11 @@ public class PostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Обновить публикацию", description = "Обновляет данные публикации по её ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Данные публикации успешно обновлены"),
+            @ApiResponse(responseCode = "404", description = "Публикация не найдена")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePost(@PathVariable @NotNull
                                            @Min(value = 1, message = "ID ресурса должен быть 1 и более") Long id,
@@ -60,6 +80,11 @@ public class PostController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "Удалить публикацию", description = "Удаляет публикацию по её ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Публикация успешно удалена"),
+            @ApiResponse(responseCode = "404", description = "Публикация не найдена")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable
                                            @NotNull
@@ -70,11 +95,19 @@ public class PostController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "Получить все публикации", description = "Возвращает список всех публикаций")
+    @ApiResponse(responseCode = "200", description = "Список публикаций успешно получен")
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         return ResponseEntity.ok(postService.findAll());
     }
 
+
+    @Operation(summary = "Получить публикации по ID пользователей", description = "Возвращает список публикаций для заданных ID пользователей")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Список публикаций успешно получен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации входных данных")
+    })
     @PostMapping("/users/posts")
     public ResponseEntity<List<UserDTO>> getUserPosts(@RequestBody List<Long> userIds) {
         List<UserDTO> userDTOs = userIds.stream()
