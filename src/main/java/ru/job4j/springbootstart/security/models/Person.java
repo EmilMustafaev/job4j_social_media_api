@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table( name = "persons",
+@Table(name = "persons",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
